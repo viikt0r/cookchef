@@ -1,0 +1,11 @@
+.active {
+  color: var(--primary);
+  transition: color 0.3s;
+}
+
+.list {
+  a {
+    margin-right: 10px;
+  }
+  margin-bottom: 20px;
+}
