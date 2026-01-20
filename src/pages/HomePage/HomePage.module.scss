@@ -32,3 +32,19 @@
   font-size: 12px;
   font-weight: 500;
 }
+
+.filterContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+
+  @include mixin.md-lt {
+    flex-direction: column;
+    align-items: stretch;
+
+    & > *:first-child {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+  }
+}

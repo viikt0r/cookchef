@@ -1,5 +1,6 @@
 import type { RecipeI } from "@/interfaces";
 import { useRecipesStore } from "@/store";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import { useShallow } from "zustand/shallow";
 import styles from "./Wishlist.module.scss";
 
@@ -21,7 +22,7 @@ function Wishlist({ recipes }: { recipes: RecipeI[] }) {
                   onClick={() => updateR({ ...r, liked: false })}
                   className="btn btn-danger"
                 >
-                  <i className="fa-solid fa-circle-xmark"></i>
+                  <CloseCircleOutlined />
                 </button>
               </li>
             ))}

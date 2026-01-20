@@ -1,15 +1,20 @@
-import type { RecipeI } from "interfaces";
+import type { RecipeCategory } from "@/interfaces";
 import { useMemo, useState } from "react";
 import { useShallow } from "zustand/shallow";
 import Loading from "../../components/Loading/Loading";
 import { useRecipesStore } from "../../store";
 import styles from "./HomePage.module.scss";
+import Category from "./components/Category/Category";
 import Recipe from "./components/Recipe/Recipe";
 import Search from "./components/Search/Search";
 import Wishlist from "./components/Wishlist/Wishlist";
 
 export default function HomePage() {
   const [filter, setFilter] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<
+    RecipeCategory | "all"
+  >("all");
+
   const { loading, recipes, incPage, updateR, deleteR, showWishlist } =
     useRecipesStore(
       useShallow(
@@ -36,6 +41,9 @@ export default function HomePage() {
     () =>
       recipes
         .filter((r) => r.title.toLowerCase().startsWith(filter))
+        .filter((r) =>
+          selectedCategory === "all" ? true : r.category === selectedCategory
+        )
         .map((r) => (
           <Recipe
             key={r._id}
@@ -44,7 +52,7 @@ export default function HomePage() {
             deleteRecipe={deleteRecipe}
           />
         )),
-    [filter, recipes]
+    [filter, selectedCategory, recipes]
   );
 
   const wishedRecipes = useMemo(
@@ -62,17 +70,27 @@ export default function HomePage() {
         <div
           className={`card flex-fill d-flex flex-column p-20 mb-20 ${styles.contentCard}`}
         >
-          <Search setFilter={setFilter} />
+          <div className={styles.filterContainer}>
+            <div className="flex-fill mr-15">
+              <Search setFilter={setFilter} />
+            </div>
+            <Category
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
+          </div>
           {loading && !recipes.length ? (
             <Loading />
           ) : (
             <div className={styles.grid}>{filteredRecipes}</div>
           )}
-          <div className="d-flex flex-row justify-content-center align-items-center p-20">
-            <button onClick={() => incPage()} className="btn btn-primary">
-              Charger plus de recettes
-            </button>
-          </div>
+          {recipes.length > 0 && recipes.length % 9 === 0 && (
+            <div className="d-flex flex-row justify-content-center align-items-center p-20">
+              <button onClick={() => incPage()} className="btn btn-primary">
+                Charger plus de recettes
+              </button>
+            </div>
+          )}
         </div>
       </div>
       {showWishlist && <Wishlist recipes={wishedRecipes} />}

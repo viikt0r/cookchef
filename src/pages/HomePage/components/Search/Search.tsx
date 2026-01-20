@@ -1,3 +1,4 @@
+import { SearchOutlined } from "@ant-design/icons";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import styles from "./Search.module.scss";
 
@@ -13,9 +14,9 @@ function Search({
 
   return (
     <div
-      className={`d-flex flex-row justify-content-center align-items-center my-30 ${styles.searchBar}`}
+      className={`d-flex flex-row justify-content-center align-items-center ${styles.searchBar}`}
     >
-      <i className="fa-solid fa-magnifying-glass mr-15"></i>
+      <SearchOutlined className="mr-15" />
       <input
         onInput={handleInput}
         className="flex-fill"

@@ -1,3 +1,4 @@
+import { RECIPE_CATEGORIES } from "@/interfaces";
 import { useRecipesStore } from "@/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { RecipeI } from "interfaces";
@@ -22,6 +23,8 @@ function AdminRecipesForm() {
   const defaultValues = {
     title: recipe ? recipe.title : "",
     image: recipe ? recipe.image : "",
+    description: recipe ? recipe.description : "",
+    category: recipe ? recipe.category : "",
   };
 
   const recipeSchema = yup.object({
@@ -34,6 +37,8 @@ function AdminRecipesForm() {
       .string()
       .required("L'URL de l'image est obligatoire")
       .url("L'URL de l'image n'est pas valide"),
+    description: yup.string().required("La description est obligatoire"),
+    category: yup.string().required("La catégorie est obligatoire"),
   });
 
   const {
@@ -43,7 +48,13 @@ function AdminRecipesForm() {
     reset,
     clearErrors,
     setError,
-  } = useForm<{ title: string; image: string; generic?: string }>({
+  } = useForm<{
+    title: string;
+    image: string;
+    description: string;
+    category: string;
+    generic?: string;
+  }>({
     defaultValues,
     resolver: yupResolver(recipeSchema),
   });
@@ -79,6 +90,13 @@ function AdminRecipesForm() {
         {errors.title && <p className="form-error">{errors.title.message}</p>}
       </div>
       <div className="d-flex flex-column mb-20">
+        <label htmlFor="">Description de la recette</label>
+        <textarea rows={5} {...register("description")} />
+        {errors.description && (
+          <p className="form-error">{errors.description.message}</p>
+        )}
+      </div>
+      <div className="d-flex flex-column mb-20">
         <label htmlFor="">Image de la recette</label>
         <input {...register("image")} type="text" />
         {errors.image && <p className="form-error">{errors.image.message}</p>}
@@ -86,7 +104,25 @@ function AdminRecipesForm() {
           <p className="form-error">{errors.generic.message}</p>
         )}
       </div>
-      <div>
+      <div className="d-flex flex-column mb-20">
+        <label htmlFor="category-recipe">Catégorie de la recette</label>
+        <select
+          id="category-recipe"
+          {...register("category")}
+          className={styles.selectCategory}
+        >
+          <option value="">Sélectionner une catégorie</option>
+          {RECIPE_CATEGORIES.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
+        {errors.category && (
+          <p className="form-error">{errors.category.message}</p>
+        )}
+      </div>
+      <div className="d-flex flex-column mb-20">
         <button disabled={isSubmitting} className="btn btn-primary">
           Sauvegarder
         </button>

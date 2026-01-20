@@ -32,6 +32,14 @@ input {
   font-family: var(--font-family);
 }
 
+select {
+  font-family: var(--font-family);
+}
+
+textarea {
+  font-family: var(--font-family);
+}
+
 ::placeholder {
   font-family: var(--font-family);
 }

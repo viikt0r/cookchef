@@ -1,4 +1,5 @@
 import { useRecipesStore } from "@/store";
+import { HeartFilled } from "@ant-design/icons";
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import cookchef from "../../assets/images/cookchef.png";
@@ -29,7 +30,7 @@ function Header() {
             onClick={() => setShowWishlist(true)}
             className="mr-15 btn btn-reverse-primary"
           >
-            <i className="fa-solid fa-heart mr-5"></i>
+            <HeartFilled className="mr-5" />
             <span>Wishlist</span>
           </button>
         )}
